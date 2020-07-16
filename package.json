@@ -37,10 +37,24 @@
     ]
   },
   "devDependencies": {
+    "husky": ">=4",
+    "lint-staged": ">=10",
     "prettier": "^2.0.5",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.3.0",
     "tslint-react": "^5.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.{ts,tsx}": [
+      "tslint -c tslint.json --fix --format verbose",
+      "prettier --write"
+    ],
+    "*.{css}": "prettier --write"
   }
 }
