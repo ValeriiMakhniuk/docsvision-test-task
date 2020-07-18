@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
+const db = firebase.firestore();
 
 // Firestore Models (like it must be)
 
