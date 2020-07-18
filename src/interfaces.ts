@@ -6,7 +6,7 @@ export interface IPlace {
 }
 
 export interface IInventory {
-  id?: string;
+  id: string;
   name: string;
   count: number;
   placeId: string;
