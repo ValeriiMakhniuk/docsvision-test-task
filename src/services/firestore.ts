@@ -29,7 +29,7 @@ interface ModelPlace {
   parts: ModelPart[] | undefined;
 }
 
-interface ModelInventory {
+export interface ModelInventory {
   name: string;
   count: number;
   place: { id: string };
@@ -130,9 +130,11 @@ export async function postInventory(inventory: ModelInventory) {
   const {
     place: { id: placeId },
   } = inventory;
+
   if (!PLACES_IDS.includes(placeId)) {
     throw new Error('Такого места не существует!');
   }
+
   return await db
     .collection('inventory')
     .withConverter(inventoryConvertor)
@@ -147,6 +149,10 @@ export async function setInventory(
   InventoryId: string,
   fields: { name?: string; count?: number }
 ) {
+  if (!fields.name && !fields.count) {
+    throw new Error('Отредактируйте хотябы одно поле');
+  }
+
   return await db
     .collection('inventory')
     .withConverter(inventoryConvertor)
