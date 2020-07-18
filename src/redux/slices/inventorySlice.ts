@@ -52,7 +52,7 @@ const inventorySlice = createSlice({
         const { placeId } = inventory;
         const whereTostore = state.inventoryByPlaceId;
 
-        if (inventory.placeId in whereTostore) {
+        if (placeId in whereTostore) {
           whereTostore[placeId].push(inventory);
         } else {
           whereTostore[placeId] = [inventory];
