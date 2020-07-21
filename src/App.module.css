@@ -1,0 +1,15 @@
+.main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.aside {
+    /* min-width: 400px; */
+    /* max-width: 600px; */
+    flex-basis: 400px;
+}
+
+.tableSection {
+    /* flex-grow: 1; */
+    flex-basis: 900px;
+}
