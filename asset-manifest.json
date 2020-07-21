@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/docsvision-test-task/static/css/main.a74799e5.chunk.css",
+    "main.js": "/docsvision-test-task/static/js/main.8f18a1f5.chunk.js",
+    "main.js.map": "/docsvision-test-task/static/js/main.8f18a1f5.chunk.js.map",
+    "runtime-main.js": "/docsvision-test-task/static/js/runtime-main.751464f2.js",
+    "runtime-main.js.map": "/docsvision-test-task/static/js/runtime-main.751464f2.js.map",
+    "static/js/2.d96868d7.chunk.js": "/docsvision-test-task/static/js/2.d96868d7.chunk.js",
+    "static/js/2.d96868d7.chunk.js.map": "/docsvision-test-task/static/js/2.d96868d7.chunk.js.map",
+    "index.html": "/docsvision-test-task/index.html",
+    "precache-manifest.8c2fc5cc3eb5fdd0e7316c0165d09f75.js": "/docsvision-test-task/precache-manifest.8c2fc5cc3eb5fdd0e7316c0165d09f75.js",
+    "service-worker.js": "/docsvision-test-task/service-worker.js",
+    "static/css/main.a74799e5.chunk.css.map": "/docsvision-test-task/static/css/main.a74799e5.chunk.css.map",
+    "static/js/2.d96868d7.chunk.js.LICENSE.txt": "/docsvision-test-task/static/js/2.d96868d7.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.751464f2.js",
+    "static/js/2.d96868d7.chunk.js",
+    "static/css/main.a74799e5.chunk.css",
+    "static/js/main.8f18a1f5.chunk.js"
+  ]
+}
