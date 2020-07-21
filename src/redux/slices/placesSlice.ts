@@ -9,6 +9,7 @@ interface PlacesState {
   allIds: string[];
   isLoading: boolean;
   error: string | null;
+  activePlaceId: string | null;
 }
 
 const placesInitialState: PlacesState = {
@@ -16,6 +17,7 @@ const placesInitialState: PlacesState = {
   allIds: [],
   isLoading: false,
   error: null,
+  activePlaceId: null,
 };
 
 function startLoading(state: PlacesState) {
@@ -41,6 +43,9 @@ const placesSlice = createSlice({
         state.placeById[place.id] = place;
       });
     },
+    setActivePlaceId(state, { payload }: PayloadAction<string>) {
+      state.activePlaceId = payload;
+    },
     getPlacesFailure: loadingFailed,
   },
 });
@@ -48,6 +53,7 @@ const placesSlice = createSlice({
 export const {
   getPlacesStart,
   getPlacesSucess,
+  setActivePlaceId,
   getPlacesFailure,
 } = placesSlice.actions;
 export default placesSlice.reducer;
