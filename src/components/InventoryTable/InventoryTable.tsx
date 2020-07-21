@@ -87,6 +87,7 @@ export const InventoryTabel: React.FC<InventoryTableProps> = ({
       title={placeName}
       columns={columns}
       data={data}
+      style={{ maxWidth: '1000px', minWidth: '800px', minHeight: '400px' }}
       editable={{
         onRowUpdate(newData, oldData) {
           return new Promise((res) => {
