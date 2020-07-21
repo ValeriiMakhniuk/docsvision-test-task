@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
 // Firestore Models (like it must be)
 
@@ -53,10 +53,11 @@ const placeConverter = {
 };
 
 const inventoryConvertor = {
-  toFirestore(post: ModelInventory): firebase.firestore.DocumentData {
+  toFirestore(inventory: ModelInventory): firebase.firestore.DocumentData {
     return {
-      name: post.name,
-      count: post.count,
+      name: inventory.name,
+      count: inventory.count,
+      place: inventory.place,
     };
   },
   fromFirestore(
@@ -110,7 +111,7 @@ export async function getInventory(): Promise<IInventory[]> {
           if (place && place.id && PLACES_IDS.includes(place.id)) {
             if (name && typeof name === 'string') {
               if (count && typeof count === 'number') {
-                return inventory;
+                return true;
               }
             }
           }
@@ -127,11 +128,9 @@ export async function getInventory(): Promise<IInventory[]> {
 }
 
 export async function postInventory(inventory: ModelInventory) {
-  const {
-    place: { id: placeId },
-  } = inventory;
+  const { name, count, place } = inventory;
 
-  if (!PLACES_IDS.includes(placeId)) {
+  if (!PLACES_IDS.includes(place.id)) {
     throw new Error('Такого места не существует!');
   }
 
@@ -139,25 +138,22 @@ export async function postInventory(inventory: ModelInventory) {
     .collection('inventory')
     .withConverter(inventoryConvertor)
     .add({
-      name: inventory.name,
-      count: inventory.count,
-      place: inventory.place,
-    });
+      name,
+      count,
+      place,
+    })
+    .then((docref) => docref.id);
 }
 
 export async function setInventory(
   InventoryId: string,
-  fields: { name?: string; count?: number }
+  fields: { name: string; count: number }
 ) {
-  if (!fields.name && !fields.count) {
-    throw new Error('Отредактируйте хотябы одно поле');
-  }
-
   return await db
     .collection('inventory')
     .withConverter(inventoryConvertor)
     .doc(InventoryId)
-    .set(fields, { mergeFields: ['count', 'name'] });
+    .update(fields);
 }
 
 export async function deleteInventory(InventoryId: string) {
