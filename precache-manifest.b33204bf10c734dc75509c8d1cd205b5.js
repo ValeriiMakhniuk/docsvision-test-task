@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "08c8adcad3ad40b969c1e26ef1572acb",
+    "revision": "e72cb7a9d466b1115ce8e0aa2015ba83",
     "url": "/docsvision-test-task/index.html"
   },
   {
-    "revision": "20e9401e1b20c2838643",
-    "url": "/docsvision-test-task/static/css/main.a74799e5.chunk.css"
+    "revision": "4329eb9ce8a3ad4c603c",
+    "url": "/docsvision-test-task/static/css/main.1d706058.chunk.css"
   },
   {
     "revision": "31fcdc3baa6fac0fad95",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/docsvision-test-task/static/js/2.d96868d7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "20e9401e1b20c2838643",
-    "url": "/docsvision-test-task/static/js/main.8f18a1f5.chunk.js"
+    "revision": "4329eb9ce8a3ad4c603c",
+    "url": "/docsvision-test-task/static/js/main.24936d8b.chunk.js"
   },
   {
     "revision": "c2b21146625c0020c616",
