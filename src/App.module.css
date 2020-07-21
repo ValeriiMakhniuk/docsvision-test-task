@@ -1,15 +1,29 @@
 .main {
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
+    background-color: #e6e7e8;
 }
 
 .aside {
-    /* min-width: 400px; */
-    /* max-width: 600px; */
-    flex-basis: 400px;
+    min-width: 400px;
+    height: 100%;
+    background-color: #f1f2f2;
 }
 
 .tableSection {
-    /* flex-grow: 1; */
-    flex-basis: 900px;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1200px) {
+    .main {
+        flex-direction: column;
+    }
+    .aside {
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 }
