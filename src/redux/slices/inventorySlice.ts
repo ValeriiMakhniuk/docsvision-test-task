@@ -12,12 +12,14 @@ import {
 
 interface InventoryState {
   inventoryByPlaceId: Record<string, IInventory[]>;
+  inventoryById: Record<string, IInventory>;
   isLoading: boolean;
   error: string | null;
 }
 
 const inventoryInitialState: InventoryState = {
   inventoryByPlaceId: {},
+  inventoryById: {},
   isLoading: false,
   error: null,
 };
@@ -48,20 +50,89 @@ const inventorySlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      payload.forEach((inventory) => {
-        const { placeId } = inventory;
-        const whereTostore = state.inventoryByPlaceId;
+      const byPlaceId = state.inventoryByPlaceId;
+      const byId = state.inventoryById;
 
-        if (placeId in whereTostore) {
-          whereTostore[placeId].push(inventory);
+      payload.forEach((inventory) => {
+        const { id, placeId } = inventory;
+
+        byId[id] = inventory;
+      });
+
+      Object.values(state.inventoryById).forEach((inventory) => {
+        const { placeId } = inventory;
+        if (placeId in byPlaceId) {
+          byPlaceId[placeId].push(inventory);
         } else {
-          whereTostore[placeId] = [inventory];
+          byPlaceId[placeId] = [inventory];
         }
       });
     },
-    postInventorySucess: loadInventorySucess,
-    setInventorySucess: loadInventorySucess,
-    deleteInventorySucess: loadInventorySucess,
+    postInventorySucess(
+      state,
+      { payload }: PayloadAction<{ id: string; inventory: ModelInventory }>
+    ) {
+      state.error = null;
+      const { id, inventory } = payload;
+      const { name, count, place } = inventory;
+
+      if (!state.inventoryByPlaceId[place.id]) {
+        state.inventoryByPlaceId[place.id] = [
+          {
+            id,
+            name,
+            count,
+            placeId: place.id,
+          },
+        ];
+      } else {
+        state.inventoryByPlaceId[place.id].push({
+          id,
+          name,
+          count,
+          placeId: place.id,
+        });
+      }
+    },
+    setInventorySucess(
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        placeId: string;
+        id: string;
+        fields: { name: string; count: number };
+      }>
+    ) {
+      state.error = null;
+
+      const {
+        placeId,
+        id,
+        fields: { name, count },
+      } = payload;
+
+      const targetInventory = state.inventoryByPlaceId[placeId].find(
+        (inventory) => inventory.id === id
+      );
+
+      if (targetInventory) {
+        targetInventory.name = name;
+        targetInventory.count = count;
+      }
+    },
+    deleteInventorySucess(
+      state,
+      { payload }: PayloadAction<{ placeId: string; id: string }>
+    ) {
+      const { placeId, id: inventoryId } = payload;
+
+      state.inventoryByPlaceId[placeId] = state.inventoryByPlaceId[
+        placeId
+      ].filter(({ id }) => {
+        return id !== inventoryId;
+      });
+    },
     getInventoryFailure: loadingFailed,
     postInventoryFailure: loadingFailed,
     setInventoryFailure: loadingFailed,
@@ -100,33 +171,35 @@ export const postInventory = (inventory: ModelInventory): AppThunk => async (
 ) => {
   try {
     dispatch(postInventoryStart());
-    await postInventoryToDB(inventory);
-    dispatch(postInventorySucess());
+    const id = await postInventoryToDB(inventory);
+    dispatch(postInventorySucess({ id, inventory }));
   } catch (error) {
     dispatch(postInventoryFailure(error.message));
   }
 };
 
 export const setInventory = (
+  placeId: string,
   inventoryId: string,
-  fields: { name?: string; count?: number }
+  fields: { name: string; count: number }
 ): AppThunk => async (dispatch) => {
   try {
     dispatch(setInventoryStart());
     await setInventoryToDB(inventoryId, fields);
-    dispatch(setInventorySucess());
+    dispatch(setInventorySucess({ placeId, id: inventoryId, fields }));
   } catch (error) {
     dispatch(setInventoryFailure(error.message));
   }
 };
 
-export const deleteInventory = (inventoryId: string): AppThunk => async (
-  dispatch
-) => {
+export const deleteInventory = (
+  placeId: string,
+  inventoryId: string
+): AppThunk => async (dispatch) => {
   try {
     dispatch(deleteInventoryStart());
     await deleteInventoryFromDB(inventoryId);
-    dispatch(deleteInventorySucess());
+    dispatch(deleteInventorySucess({ placeId, id: inventoryId }));
   } catch (error) {
     dispatch(deleteInventoryFailure(error.message));
   }
